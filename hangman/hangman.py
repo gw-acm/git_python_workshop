@@ -46,7 +46,11 @@ dictionary.
 @return - A list containing all lines of the file
 '''
 def get_dictionary():
-    # TODO: Fill in this function
+    dictionary = []
+    file_name = raw_input("Name of file: ")
+
+    with open(file_name) as f:
+        dictionary = f.readlines()
 
     return dictionary
 
@@ -59,7 +63,9 @@ It then turns all letters of the selected word to lowercase.
 @return - A single word with all lowercase characters
 '''
 def computer_pick_word(dictionary):
-    # TODO: Fill in this function
+    index = random.randrange(0, len(dictionary))
+
+    word = dictionary[index].lower()
 
     return word
 
@@ -76,7 +82,8 @@ def fill_status_init():
     global word_len
     global status
 
-    # TODO: Fill in this function
+    for x in range(word_len):
+        status.append('_')
 
 '''
 This function fills the status list with the letters
@@ -90,7 +97,8 @@ def fill_status(guess):
     global status
     global indicies
 
-    # TODO: Fill in this function
+    for x in indicies:
+        status[x] = guess
 
 '''
 This functions prompts the user to guess one letter.
@@ -102,7 +110,11 @@ until they get it right.
 @return - Character entered by user (can leave as string)
 '''
 def get_letter():
-    # TODO: Fill in this function
+    guess = raw_input("Enter a letter guess: ")
+
+    while len(guess) != 1 or not guess.isalpha():
+        print "Bad input, enter single letter!"
+        guess = raw_input("Enter a letter guess: ")
 
     return guess
 
@@ -120,8 +132,14 @@ has been guessed previously.
 def has_guessed(guess):
     global guessed_letters
 
-    # TODO: Fill in this function
-
+    if len(guessed_letters) > 0:
+        if guess in guessed_letters:
+            print "Already guessed %s" % guess
+            return -1
+        else:
+            return 0
+    else:
+        return 0
 '''
 This function loops through the word and checks if
 the guessed letter is in it. It will then append the
@@ -140,7 +158,9 @@ def does_word_contain_letter(guess):
     global status
     global indicies
 
-    # TODO: Fill in this function
+    for x in range(word_len):
+        if word[x] == guess:
+            indicies.append(x)
 
 '''
 This function notifies the user if the guess they made is bad.
@@ -156,7 +176,8 @@ message notifying the user that their guess is bad.
 def bad_guess(guess):
     global lives
 
-    # TODO: Fill in this function
+    print "Bad guess, -1 life :( %s" %guess
+    lives = lives - 1
 
 '''
 This function compares the current state of what has been guessed
@@ -174,7 +195,16 @@ def end_if_win_loss():
     global word_len
     global status
 
-    # TODO: Fill in this function
+    status_word = ''.join(status)
+
+    if word == status_word:
+        print "you won! the word is %s" % word
+        return True
+    elif lives <= 0:
+        print "you ran out of lives :( the word is %s" % word
+        return True
+    else:
+        return False
 
 '''
 This function runs the guessing sequence. It gets the letter
